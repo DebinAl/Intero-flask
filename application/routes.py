@@ -24,7 +24,7 @@ def talent_id(_id):
     object_id = ObjectId(_id)
 
     if request.method == 'GET':
-        return helper.get_talent_by_id(object_id, db.talents)
+        return helper.get_talent_by_id(object_id)
 
     elif request.method == 'PUT':
         # Get updated data from the request body
