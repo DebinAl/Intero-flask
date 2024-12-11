@@ -73,7 +73,7 @@ def upload_image():
                     img_data = response.json()
                     print(json.dumps(img_data, indent=4))
                     link = img_data['data']['url']  # Retrieve the image URL from ImgBB
-                    link =  link.replace('i.ibb.co', 'i.ibb.com')
+                    link =  link.replace('i.ibb.co', 'i.ibb.co.com')
 
                     # store image metadata in the database
                     image_data = {
