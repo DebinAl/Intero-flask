@@ -75,7 +75,7 @@ def upload_image():
 
                 if response.status_code == 200:
                     img_data = response.json()
-                    print(json.dumps(img_data, indent=4))
+                    # print(json.dumps(img_data, indent=4))
                     link = img_data['data']['url']  # Retrieve the image URL from ImgBB
                     link =  link.replace('i.ibb.co', 'i.ibb.co.com')
 
