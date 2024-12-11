@@ -84,9 +84,15 @@ def upload_image():
                         "filename": filename,
                         "link": link
                     }
-                    db.images.insert_one(image_data)
+                    result = db.images.insert_one(image_data)
+                    _id = str(result.inserted_id)
+                    
+                    data = {
+                        "_id" : _id,
+                        "url": link
+                    }
 
-                return jsonify(helper.response_image('Image uploaded successfully.', link)), 201
+                return jsonify(helper.response('Image uploaded successfully.', data)), 201
 
             except Exception as e:
                 return jsonify(helper.err_response(str(e))), 500
@@ -111,11 +117,19 @@ def image_id(_id):
 
         return response
     
+
+def initialize_existing_filenames():
+    """Fetch all filenames from the database into a set."""
+    return set(record["filename"] for record in db.images.find({}, {"filename": 1}))
+
+cached_filenames = initialize_existing_filenames()
+
 def generate_uuid():
     while True:
         # Generate a random UUID
         new_uuid = str(uuid.uuid4())
         
-        # Check if the UUID already exists in the database
-        if not db.images.find_one({"filename": new_uuid}):
+        # Check for duplicates in the cached set
+        if new_uuid not in cached_filenames:
+            cached_filenames.add(new_uuid)  # Add the new UUID to the set
             return new_uuid
