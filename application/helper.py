@@ -102,7 +102,6 @@ def get_talent_by_id(object_id):
 def update_talent_by_id(object_id, data):
     try:
         result = db.talents.update_one({'_id': object_id}, {'$set': data})
-        result = db.talents.delete_one({'_id': object_id}, {'$set': data})
 
         if result.matched_count == 0:
             return jsonify(err_response('Data not found for update.')), 404
