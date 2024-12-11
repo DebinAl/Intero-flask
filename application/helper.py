@@ -19,6 +19,21 @@ def response(message: str, obj = None) -> dict[str, any]:
 
     return json
 
+def response_image(message: str, link = None) -> dict[str, any]:
+    if link == None:
+        json = {
+            "error": False,
+            "message": message
+        }
+    else:
+        json = {
+            "error": False,
+            "message": message,
+            "url": link
+        }
+
+    return json
+
 def err_response(e: str) -> dict[str, any]:
     json = {
         "error": True,

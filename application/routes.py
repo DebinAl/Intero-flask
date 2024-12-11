@@ -4,6 +4,8 @@ from bson import ObjectId
 from flask import request, jsonify
 from werkzeug.utils import secure_filename
 from application import app, db, helper, IMAGEBB_KEY
+
+import json
     
 @app.route('/api/v1/cms/talents', methods=["GET", "POST"])
 def talents():
@@ -69,7 +71,9 @@ def upload_image():
 
                 if response.status_code == 200:
                     img_data = response.json()
+                    print(json.dumps(img_data, indent=4))
                     link = img_data['data']['url']  # Retrieve the image URL from ImgBB
+                    link =  link.replace('i.ibb.co', 'i.ibb.com')
 
                     # store image metadata in the database
                     image_data = {
@@ -78,7 +82,7 @@ def upload_image():
                     }
                     db.images.insert_one(image_data)
 
-                return jsonify(helper.response('Image uploaded successfully.')), 201
+                return jsonify(helper.response_image('Image uploaded successfully.', link)), 201
 
             except Exception as e:
                 return jsonify(helper.err_response(str(e))), 500
