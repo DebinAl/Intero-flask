@@ -4,6 +4,7 @@ from bson import ObjectId
 from flask import request, jsonify
 from werkzeug.utils import secure_filename
 from application import app, db, helper, IMAGEBB_KEY
+import uuid
 
 import json
     
@@ -55,7 +56,9 @@ def upload_image():
         if file and helper.allowed_file(file.filename):
             try:
                 # Sanitize and secure the filename
-                filename = secure_filename(file.filename)
+                # filename = secure_filename(file.filename)
+
+                filename = generate_uuid()
                 
                 #upload to imagebb and retrieve the link
                 with file.stream as image_stream:  # Ensure the file stream is passed
@@ -63,9 +66,10 @@ def upload_image():
                         "https://api.imgbb.com/1/upload",
                         params={
                             'key': IMAGEBB_KEY,
-                            'name': os.path.splitext(filename)[0],
+                            # 'name': os.path.splitext(filename)[0],
+                            'name': filename,
                             'expiration': 1728000 # 20 days
-                                },
+                            },
                         files={'image': image_stream}
                     )
 
@@ -106,3 +110,12 @@ def image_id(_id):
         # if response[1] == 200:
 
         return response
+    
+def generate_uuid():
+    while True:
+        # Generate a random UUID
+        new_uuid = str(uuid.uuid4())
+        
+        # Check if the UUID already exists in the database
+        if not db.images.find_one({"filename": new_uuid}):
+            return new_uuid
