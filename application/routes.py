@@ -35,7 +35,7 @@ def talent_id(_id):
         return helper.update_talent_by_id(object_id, data)
 
     elif request.method == 'DELETE':
-        return helper.delete_talent_by_id(object_id, db.talents)
+        return helper.delete_talent_by_id(object_id)
     
 @app.route('/api/v1/cms/images', methods=['GET', 'POST'])
 def upload_image():
@@ -55,18 +55,14 @@ def upload_image():
         # Check if the file is allowed
         if file and helper.allowed_file(file.filename):
             try:
-                # Sanitize and secure the filename
-                # filename = secure_filename(file.filename)
-
                 filename = generate_uuid()
                 
                 #upload to imagebb and retrieve the link
-                with file.stream as image_stream:  # Ensure the file stream is passed
+                with file.stream as image_stream:
                     response = requests.post(
                         "https://api.imgbb.com/1/upload",
                         params={
                             'key': IMAGEBB_KEY,
-                            # 'name': os.path.splitext(filename)[0],
                             'name': filename,
                             'expiration': 1728000 # 20 days
                             },
@@ -75,8 +71,7 @@ def upload_image():
 
                 if response.status_code == 200:
                     img_data = response.json()
-                    # print(json.dumps(img_data, indent=4))
-                    link = img_data['data']['url']  # Retrieve the image URL from ImgBB
+                    link = img_data['data']['url']
                     link =  link.replace('i.ibb.co', 'i.ibb.co.com')
 
                     # store image metadata in the database

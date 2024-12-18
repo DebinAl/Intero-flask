@@ -61,9 +61,10 @@ def get_all_images():
 
 def create_talent(data):
     try:
-        db.talents.insert_one(data)
+        result = db.talents.insert_one(data)
+        _id = result.inserted_id
 
-        return jsonify(response('Data Created Successfully.')), 201
+        return jsonify(response(f'Data Created Successfully: {_id}')), 201
 
     except Exception as e:
         return jsonify(err_response(e)), 500
@@ -91,7 +92,7 @@ def update_talent_by_id(object_id, data):
         if result.matched_count == 0:
             return jsonify(err_response('Data not found for update.')), 404
 
-        return jsonify(response('Data Updated Successfully.')), 200
+        return jsonify(response(f'Data Updated Successfully: {object_id}')), 200
 
     except Exception as e:
         return jsonify(err_response(str(e))), 500
