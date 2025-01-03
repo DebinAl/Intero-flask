@@ -4,7 +4,7 @@ This repository contains the VENTIX project, a microservices-based ticketing app
 ## 📜 Project Overview
 VENTIX is a robust ticketing application designed to handle ticket bookings, user management, event management, and multimedia handling through a distributed microservices architecture. Each service is independently developed, maintained, and deployed, ensuring flexibility and resilience.
 
-For a detailed explanation of the application's architecture, features, and technology stack, refer to the Project Report.
+For a detailed explanation of the application's architecture, features, and technology stack, refer to the [Project Report](https://1drv.ms/w/c/7a8f2b2853bae142/ERX0eqf0NVRKoZt18yTekfYBRw-A_bXOiHCJc6tccRp1Uw?e=rTxWNs).
 
 ## 🔧 My Contribution
 As part of the development team, I worked on the Flask-Python microservice to handle the following functionalities:
